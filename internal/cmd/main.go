@@ -72,7 +72,7 @@ func main() {
 	}
 	client := notion.NewClient(notionApiKey, notion.WithHTTPClient(httpClient))
 	fmt.Println(client.FindDatabaseByID(ctx, pokeDBId))
-	gen, err := pokedb.GetGen(ctx, "1")
+	gen, err := pokedb.ProcessGen(ctx, 1)
 	if err != nil {
 		fmt.Errorf("Error getting Pokemon Generation: %v", err)
 	}
