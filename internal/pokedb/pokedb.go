@@ -8,11 +8,11 @@ import (
 	"github.com/mtslzr/pokeapi-go/structs"
 )
 
-func getGen(ctx context.Context, genId int32) (structs.Resource, error) {
-	g, err := pokeapi.Resource(fmt.Sprintf("generation-%d", genId))
+func GetGen(ctx context.Context, genId string) (structs.Generation, error) {
+	g, err := pokeapi.Generation(genId)
 	if err != nil {
 		fmt.Errorf("Error getting Pokemon Generation %d", genId)
-		return structs.Resource{}, err
+		return structs.Generation{}, err
 	}
 	return g, nil
 }

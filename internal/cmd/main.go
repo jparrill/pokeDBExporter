@@ -7,11 +7,10 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/dstotijn/go-notion"
-	//poke "github.com/jparrill/pokeDBExporter/internal/pokemon"
+	"github.com/jparrill/pokedbexporter/internal/pokedb"
 	//"github.com/mtslzr/pokeapi-go"
 )
 
@@ -40,25 +39,25 @@ const (
 	pokeDBCover  = "https://www.kindpng.com/picc/m/2-24125_pokemon-logo-transparent-hd-png-download.png"
 )
 
-func updatePageCover(client *notion.Client, ctx context.Context, pageID, coverField, coverURL string) error {
-	_, err := client.UpdatePage(ctx, pageID, notion.UpdatePageParams{
-		DatabasePageProperties: notion.DatabasePageProperties{
-			coverField: notion.DatabasePageProperty{
-				Files: []notion.File{
-					{
-						Name: filepath.Base(coverURL),
-						Type: notion.FileTypeExternal,
-						External: &notion.FileExternal{
-							URL: coverURL,
-						},
-					},
-				},
-			},
-		},
-	})
-
-	return err
-}
+//func updatePageCover(client *notion.Client, ctx context.Context, pageID, coverField, coverURL string) error {
+//	_, err := client.UpdatePage(ctx, pageID, notion.UpdatePageParams{
+//		DatabasePageProperties: notion.DatabasePageProperties{
+//			coverField: notion.DatabasePageProperty{
+//				Files: []notion.File{
+//					{
+//						Name: filepath.Base(coverURL),
+//						Type: notion.FileTypeExternal,
+//						External: &notion.FileExternal{
+//							URL: coverURL,
+//						},
+//					},
+//				},
+//			},
+//		},
+//	})
+//
+//	return err
+//}
 
 func main() {
 	ctx := context.Background()
@@ -73,7 +72,9 @@ func main() {
 	}
 	client := notion.NewClient(notionApiKey, notion.WithHTTPClient(httpClient))
 	fmt.Println(client.FindDatabaseByID(ctx, pokeDBId))
-	gen, err := pokedb.getGen(ctx, int32(1))
+	gen, err := pokedb.GetGen(ctx, "1")
+	if err != nil {
+		fmt.Errorf("Error getting Pokemon Generation: %v", err)
+	}
 	fmt.Println(gen)
-
 }
